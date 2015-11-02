@@ -1,0 +1,40 @@
+# Run just the integration tests that start with $1 
+# (e.g. dtest TestBuildHandleEscapes or dtest TestBuild to run all build tests)
+function dtest() {
+   TESTFLAGS="-check.f $1" make test-integration-cli
+}
+
+# Run the unit test in $1 dir (e.g. pkg/mflag)
+function utest() {
+   TESTDIRS=$1 make test-unit
+}
+
+# Grabs the updates associated with the specified PR
+# PR is specified as: user:branch-name
+function getPR() {
+  echo "==>" git fetch git@github.com:${1%:*}/docker.git ${1#*:}
+  git fetch git@github.com:${1%:*}/docker.git ${1#*:}
+  echo "==>" git checkout FETCH_HEAD
+  git checkout FETCH_HEAD
+}
+
+# Erases all containers and unused images
+function cleanDocker() {
+  mydocker ps -a | grep Exited | while read a b
+  do
+    mydocker rm -f $a
+  done
+  mydocker ps -a | grep Created | while read a b
+  do
+    mydocker rm -f $a
+  done
+  docker images -q -f dangling=true | while read a
+  do
+  	docker rmi $a
+  done
+}
+
+# Used to delete a local and remote branch, usually after its been merged
+function delBranch() {
+	git branch -d $1 && git push origin :$1
+}
