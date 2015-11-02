@@ -12,10 +12,10 @@ function utest() {
 # Grabs the updates associated with the specified PR
 # PR is specified as: user:branch-name
 function getPR() {
-  echo "==>" git fetch git@github.com:${1%:*}/docker.git ${1#*:}
+  (set -x
   git fetch git@github.com:${1%:*}/docker.git ${1#*:}
-  echo "==>" git checkout FETCH_HEAD
   git checkout FETCH_HEAD
+  )
 }
 
 # Erases all containers and unused images
