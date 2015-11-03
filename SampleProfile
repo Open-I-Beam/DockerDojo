@@ -20,17 +20,17 @@ function getPR() {
 
 # Erases all containers and unused images
 function cleanDocker() {
-  mydocker ps -a | grep Exited | while read a b
+  docker ps -a | grep Exited | while read a b
   do
-    mydocker rm -f $a
+    docker rm -f $a
   done
-  mydocker ps -a | grep Created | while read a b
+  docker ps -a | grep Created | while read a b
   do
-    mydocker rm -f $a
+    docker rm -f $a
   done
   docker images -q -f dangling=true | while read a
   do
-  	docker rmi $a
+    docker rmi $a
   done
 }
 
