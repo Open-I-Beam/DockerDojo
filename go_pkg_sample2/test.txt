@@ -1,0 +1,56 @@
+[{
+ "name": "emp1",
+ "salary": 10000,
+ "manager" : "mgr1"
+},
+{
+ "name": "emp2",
+ "salary": 11011,
+ "manager" : "mgr1"
+},
+{
+ "name": "emp3",
+ "salary": 11002,
+ "manager" : "mgr1"
+},
+{
+ "name": "emp4",
+ "salary": 11013,
+ "manager" : "mgr2"
+},
+{
+ "name": "emp5",
+ "salary": 11014,
+ "manager" : "mgr2"
+},
+{
+ "name": "emp6",
+ "salary": 11005,
+ "manager" : "mgr2"
+},
+{
+ "name": "emp7",
+ "salary": 11006,
+ "manager" : "mgr1"
+},
+{
+ "name": "emp8",
+ "salary": 11017,
+ "manager" : "mgr1"
+},
+{
+ "name": "mgr1",
+ "salary": 11008,
+ "manager" : "dir1"
+},
+{
+ "name": "mgr2",
+ "salary": 11019,
+ "manager" : "dir1"
+},
+{
+ "name": "dir1",
+ "salary": 11010,
+ "manager" : "vp1"
+}]
+
