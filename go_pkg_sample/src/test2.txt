@@ -1,1 +1,0 @@
-[{"Name":"abc","Salary":10000},{"Name":"def","Salary":11000},{"Name":"ghi","Salary":12000}]

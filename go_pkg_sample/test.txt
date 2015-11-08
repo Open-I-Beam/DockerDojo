@@ -1,0 +1,9 @@
+[{
+ "name": "abc",
+ "salary": 10000
+},
+{
+ "name": "def",
+ "salary": 11000
+}]
+

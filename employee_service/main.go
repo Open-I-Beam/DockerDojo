@@ -25,7 +25,8 @@ func main() {
 		return e1.Salary <= e2.Salary
 	}
 
-	api.StartAPIServer(api.Options{Host: "localhost", Port: 5678}, emprecs)
+	//TODO add the implementor of the EmployeeService
+	api.StartAPIServer(api.Options{Host: "localhost", Port: 5678}, interface{})
 
 	sort.Sort(emprecs)
 	f2, err := os.Create("test2.txt")

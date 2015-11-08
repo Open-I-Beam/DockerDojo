@@ -29,25 +29,16 @@ func (e *EmpRecs) Swap(i, j int) {
 }
 
 func (e *EmpRecs) AddEmployee(emp Employee) error {
-	e.Emps = append(e.Emps, emp)
+	//TODO write code to add new employee
 	return nil
 }
 
 func (e *EmpRecs) DeleteEmployee(name string) error {
-	for i, emp := range e.Emps {
-		if emp.Name == name {
-			newSlice := make([]Employee, i)
-			copy(newSlice, e.Emps[:i])
-			if i < len(e.Emps) {
-				newSlice = append(newSlice, e.Emps[i+1:]...)
-			}
-			e.Emps = newSlice
-			return nil
-		}
-	}
+	//TODO write code to delete the employee from the list
 	return errors.New(fmt.Sprintf("Not Found %s", name))
 }
 
 func (e *EmpRecs) ListEmployees() ([]Employee, error) {
-	return e.Emps, nil
+	//TODO write code to return list of employees
+	return nil, nil
 }

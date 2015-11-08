@@ -45,9 +45,7 @@ func (h *handler) AddEmployee(r *http.Request) responseEntity {
 
 func (h *handler) DeleteEmployee(r *http.Request) responseEntity {
 	//	vars := mux.Vars(r)
-
 	values := r.URL.Query()
-	fmt.Println("SRINI vars ", values)
 	err := h.empSvc.DeleteEmployee(values.Get("Name"))
 	if err != nil {
 		return responseEntity{http.StatusInternalServerError, err}
