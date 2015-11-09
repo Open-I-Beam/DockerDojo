@@ -1,0 +1,874 @@
+
+=======
+slide 5
+=======
+
+package main
+
+import "fmt"
+
+func main() {
+    var a int
+    var b *int
+    a = 7000
+    b = &a
+    var c uint8 = 127
+    var f float64 = 22./7.
+    fmt.Println(a, uint8(a), ^a)
+    fmt.Println((c &^ 3), (c & 0xFC))
+
+    fmt.Printf("%10.40f,%d\n",f, int(f))
+    
+    for i := *b; i > *b-4; *b++ {   // ++ is not a operator, does not move the pointer
+        fmt.Println(b, *b)
+    }
+
+    var x int=1
+    fmt.Println(23 + 3*x, x)
+
+	const (
+		MONDAY  = 2
+		TUESDAY = iota
+		WEDNESDAY
+		THURSDAY
+	)
+
+	fmt.Println(MONDAY, TUESDAY, WEDNESDAY, THURSDAY)
+
+
+}
+
+==========
+
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    const nihongo = "日本語"
+    for index, runeValue := range nihongo {
+        fmt.Printf("%#U starts at byte position %d\n", runeValue, index)
+    }
+    for k, v := range []byte(nihongo) {
+        fmt.Printf("%d:%x\n",k,v)
+    }
+}
+
+================
+SLIDE 9
+================
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+	var a [100]int
+	b := []int{1,2,3,4,5,6,7,8,9,10}
+
+	fmt.Println(len(a), len(b))
+	
+	a1 := a[5:12]
+	copy(a1,b)
+	fmt.Println(len(a1), len(b), cap(a1), a1)
+
+	b1 := new([10]int)
+	//copy(b1,b)
+	copy(b1[0:],b)
+	fmt.Println(len(b1), len(b), cap(b1), b1)
+
+	b2 := make([]int,12)
+	copy(b2,b)
+	fmt.Println(len(b2), len(b), cap(b2), b2)
+
+}
+
+================
+SLIDE 10
+================
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    mymap := map[string]int{"one": 1, "two": 2, "three": 3, "four": 4}
+    fmt.Println(mymap["one"])
+    for _, str := range []string{"four", "five"} {
+        if val, ok := mymap[str]; ok {
+            fmt.Println("Value for mymap[\"", str, "\"] = ", val)
+        } else {
+            fmt.Println("Value is missing for key ", str)
+        }
+    }
+    delete(mymap, "one")
+    fmt.Println(mymap)
+}
+
+=======
+package main
+
+import (
+    "fmt"
+)
+
+func delMap(m map[string]int, key string) {
+	delete(m,key)
+}
+
+func main() {
+    mymap := map[string]int{"one": 1, "two": 2, "three": 3, "four": 4}
+    fmt.Println(mymap["one"])
+    for _, str := range []string{"four", "five"} {
+        if val, ok := mymap[str]; ok {
+            fmt.Println("Value for mymap[\"", str, "\"] = ", val)
+        } else {
+            fmt.Println("Value is missing for key ", str)
+        }
+    }
+    delete(mymap, "one")
+    fmt.Println(mymap)
+
+    delMap(mymap, "two")
+    fmt.Println(mymap)
+
+}
+
+
+================
+SLIDE 11
+================
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    type Point struct {
+        x, y float64
+    }
+    p := Point{7.1, 8.1}
+    pp := &Point{7.2, 8.2}
+    pp2 := new(Point)
+    pp2.x = 7.3
+    pp2.y = 8.3
+    fmt.Println(p, *pp, *pp2)
+}
+
+
+=================
+SLIDE 12
+=================
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    type anotherPoint struct {
+        x, y int
+    }
+    type Point struct {
+        anotherPoint
+        x, y float64
+    }
+    p := Point{anotherPoint{}, 7.1, 8.1}
+    pp := &Point{anotherPoint{1, 2}, 7.2, 8.2}
+    pp2 := new(Point)
+    pp2.x = 7.3
+    pp2.y = 8.3
+    fmt.Println(p, *pp, *pp2)
+}
+
+
+============
+SLIDE 16
+============
+package main
+
+import "fmt"
+
+func main() {
+  for a:=0; a <=5 ;a++ {
+    switch a%5 {
+    case 0: fmt.Println(a,"a 5 multiple") 
+    case 4: fmt.Println(a,"top")
+    case 1: fmt.Println(a,"bottom")
+    default: fmt.Println(a,"somewhere")
+    }
+  }
+}  
+=========
+  var i int = 5
+  //var c string = "abc"
+  var x interface{}
+  var j *int = &i
+  x = j
+  switch x.(type) {
+	case int: fmt.Println("INTEGER")
+	case string: fmt.Println("STRING")
+	case *int: fmt.Println("INTPOINTER")
+  }
+
+=========
+slide 17
+=========
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    var a string = "ojod rekcod ot emocleW"
+    b := make([]byte, len(a))
+    for i, c := range a {
+        if i < len(a)/2 {
+            b[len(a)-i-1], b[i] = byte(c), a[len(a)-i-1]
+        } else {
+            break
+        }
+    }
+    fmt.Println(a, string(b))
+}
+
+
+=========
+slide 20
+=========
+package main
+
+import "fmt"
+
+func trace(s string)   { fmt.Println("entering:", s) }
+func untrace(s string) { fmt.Println("leaving:", s) }
+
+func a() {
+    trace("a")
+    defer untrace("a")
+    fmt.Println("in a")
+}
+func b() {
+    trace("b")
+    defer untrace("b")
+    fmt.Println("in b")
+    a()
+}
+func main() { b() }
+
+--------------------- //CLOSURE
+package main
+
+import "fmt"
+
+func adder() func(int) int {
+    var x int
+    return func(delta int) int {
+        x += delta
+        return x
+    }
+}
+func main() {
+    f := adder()
+    fmt.Println(f(1))
+    fmt.Println(f(20))
+    fmt.Println(f(300))
+}
+
+
+---------------------- //inner function
+
+package main
+
+import "fmt"
+
+func f() {
+    for i := 0; i < 10; i++ {
+        g := func(i int) { fmt.Printf("%d ", i) }
+        g(i)
+    }
+}
+func main() { f() }
+
+
+-------------------- variadic
+
+
+
+-------------------- panic and errors
+
+
+package main
+
+import (
+    "errors"
+    "fmt"
+)
+
+func add(vals ...int) (int, error) {
+    if vals == nil {
+        panic("nil list")
+        recover()
+    }
+    if len(vals) == 1 {
+        return 0, errors.New("only one number to add")
+    }
+
+    total := 0
+    for _, v := range vals {
+        total += v
+    }
+    return total, nil
+
+}
+
+func demoPanic() {
+    defer func() {
+        if e := recover(); e != nil {
+            // e is the interface{} typed-value we passed to panic()
+            fmt.Println("Whoops: ", e) // Prints "Whoops: boom!"
+        }
+        return
+    }()
+    fmt.Println(add())
+}
+
+func main() {
+    fmt.Println(add(1))
+    fmt.Println(add(1, 3, 5))
+    
+    demoPanic()
+    
+    fmt.Println(add(1, 2))
+}
+
+
+=================
+SLIDE 21
+=================
+package main
+
+import (
+    "fmt"
+    "math"
+   )
+type Point struct {
+   x, y float64
+}
+func (p *Point) Dist(p1 Point) float64 {
+    return math.Sqrt(math.Pow(p.x-p1.x,2) + math.Pow(p.y-p1.y,2))
+}
+func main() {
+  p := Point{}
+  pp := Point{3,4}
+  fmt.Println(p.Dist(pp))
+}
+
+=================
+SLIDE 22
+=================
+package main
+
+import (
+    "fmt"
+    "sync"
+   )
+
+type Mutex struct { mu sync.Mutex}
+
+func (m *Mutex) Lock() { m.mu.Lock() }
+func (m *Mutex) Unlock() { m.mu.Unlock() }
+
+type Buffer struct {
+      data []byte
+      Mutex  // need not be first in Buffer
+}
+
+func (b *Buffer) Write(by byte) {
+   b.Lock() 
+   b.data = append(b.data,by)
+   b.Unlock()
+}
+
+func main() {
+   b := new(Buffer)
+   b.Write('a')
+   b.Write('b')
+   fmt.Println(b)
+   
+}
+
+=================
+SLIDE 24
+=================
+package main
+
+import (
+    "fmt"
+   )
+
+type adder interface { sum(a,b int) int
+  }
+
+type calc struct {
+  calctype string 
+}
+
+type scicalc struct {
+  calctype string 
+}
+
+func (c *calc) sum(a,b int) int {
+    return a+b
+}
+
+func (c *calc) sub(a,b int) int {
+    return a-b
+}
+
+func (c *scicalc) sum(a,b int) int {
+    return a+b
+}
+
+func (c *scicalc) mul(a,b int) int {
+    return a*b
+}
+
+func main() {
+  var mycalc adder
+  mycalc = &calc{"CALC"} //concrete value
+  fmt.Println(mycalc.sum(1,2), mycalc)   
+
+  mycalc = &scicalc{"SCICALC"}
+  fmt.Println(mycalc.sum(1,2), mycalc)     
+}
+
+
+================
+SLIDE 28
+================
+
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+var wg sync.WaitGroup
+
+func pump() {
+    defer wg.Done()
+    for i := 0; i < 10; i++ {
+        fmt.Println("In goroutine pump ", i)
+        time.Sleep(2 * time.Millisecond)
+    }
+}
+
+func main() {
+    wg.Add(1)
+    go pump()
+    go func() {
+        wg.Add(1)
+        defer wg.Done()
+        for i := 0; i < 10; i++ {
+            fmt.Println("In goroutine ", i)
+            time.Sleep(1 * time.Millisecond)
+        }
+    }()
+    //time.Sleep(5 * time.Millisecond)
+    wg.Wait()
+}
+
+
+=================
+SLIDE 29
+=================
+package main
+
+import (
+    "fmt"
+   )
+
+  func pump() chan int {
+      ch := make(chan int)
+      go func() {for i := 0; ; i++ { ch <- i }}()
+      return ch
+  }
+
+func main() {
+  ch1 := pump()        // pump hangs; we run
+  for k:=0;k<10;k++ {
+   j:=<-ch1
+  fmt.Println(j)  // prints 0 
+  }
+}
+
+
+======================
+
+package main
+
+import (
+    "fmt"
+   )
+
+  func pump() chan int {
+      ch := make(chan int)
+      go func() {
+        for i := 0; i<10; i++ { 
+            ch <- i 
+        } 
+        close (ch)
+    }()
+
+      return ch
+  }
+
+func main() {
+  ch1 := pump()        
+  for k:=0;k<100;k++ {
+   if j,ok:=<-ch1;ok {
+    fmt.Println(j)
+   } 
+  }
+}
+
+=======================
+
+package main
+
+import (
+    "fmt"
+   )
+
+  func pump() chan int {
+      ch := make(chan int)
+      go func() {
+        for i := 0; i<10; i++ { 
+            ch <- i 
+        } 
+        close (ch)
+    }()
+
+      return ch
+  }
+
+func main() {
+  ch1 := pump()        
+  for j := range ch1  {
+    fmt.Println(j)
+  }
+}
+
+
+========================
+package main
+
+import (
+    "fmt"
+    "time"
+   )
+
+  func pump() chan int {
+      ch := make(chan int)
+      go func() {
+        for i := 0; i<10; i++ { 
+            fmt.Println("Putting ",i)
+            ch <- i 
+        } 
+        close (ch)
+    }()
+
+      return ch
+  }
+
+func main() {
+  ch1 := pump()        
+  for j := range ch1 {
+    fmt.Println(j)
+    time.Sleep(time.Second * 0)
+  }
+}
+
+
+
+======================
+slide 29
+======================
+
+package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+func main() {
+    var wg sync.WaitGroup
+    for i := 0; i < 5; i++ {
+        wg.Add(1)
+        x := i
+        go func() {
+            time.Sleep(1 * time.Second)
+            fmt.Println(x)
+            wg.Done()
+        }()
+    }
+    wg.Wait()
+}
+
+==================
+slide 30
+==================
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func pump(ch chan int) {
+    go func() {
+        for i := 0; i < 10; i++ {
+            ch <- i
+            time.Sleep(1 * time.Millisecond)
+        }
+    }()
+
+}
+
+func pump2(ch chan float64) {
+    go func() {
+        j := 1.1
+        for i := 0; i < 10; i++ {
+            ch <- j
+            j = j + 0.1
+            time.Sleep(1 * time.Millisecond)
+        }
+    }()
+
+}
+
+func pump3(ch chan string) {
+    go func() {
+        for i := 0; i < 10; i++ {
+            ch <- fmt.Sprintf("String %d", i)
+            time.Sleep(1 * time.Millisecond)
+        }
+    }()
+}
+
+func main() {
+    var (
+        chInt    chan int
+        chFloat  chan float64
+        chString chan string
+    )
+    chInt = make(chan int)
+    chFloat = make(chan float64)
+    chString = make(chan string)
+
+    go pump(chInt)
+    go pump2(chFloat)
+    go pump3(chString)
+
+    for {
+        select {
+        case i := <-chInt:
+            fmt.Printf("got an int %d\n", i)
+        case f := <-chFloat:
+            fmt.Printf("got a float %f\n", f)
+        case s := <-chString:
+            fmt.Printf("got a string %s\n", s)
+        case <-time.After(time.Second * 10):
+            fmt.Println("Timed out")
+            return
+        }
+    }
+    fmt.Println("Good Bye!")
+}
+
+====================
+slide 30
+====================
+package main
+
+import (
+    "fmt"
+    "reflect"
+    "time"
+)
+
+func makeChan(chp interface{}) {
+    chpv := reflect.ValueOf(chp)
+    if chpv.Kind() != reflect.Ptr {
+        panic("first argument must be pointer")
+    }
+
+    chv := chpv.Elem()
+    if chv.Kind() != reflect.Chan {
+        panic("first argument must be pointer of chan")
+    }
+
+    chantype := chv.Type()
+    fmt.Println("chan type ", chantype)
+    chv.Set(reflect.MakeChan(chantype, 10))
+}
+
+func pump(chp interface{}, value interface{}) {
+    chpv := reflect.ValueOf(chp)
+    if chpv.Kind() != reflect.Ptr {
+        panic("first argument must be pointer")
+    }
+
+    chv := chpv.Elem()
+    if chv.Kind() != reflect.Chan {
+        panic("first argument must be pointer of chan")
+    }
+
+    fmt.Println(reflect.TypeOf(value))
+    
+    for i:=1;i<5;i++ {
+            switch value.(type) {
+            case int:
+                fmt.Println("putting int")
+                chv.Send(reflect.ValueOf(value))
+            case float64:
+                fmt.Println("putting float")
+                chv.Send(reflect.ValueOf(value))
+            case string:
+                fmt.Println("putting string")
+                chv.Send(reflect.ValueOf(value))
+            }
+            time.Sleep(1 * time.Second)
+    }
+}
+
+func main() {
+    var (
+        chInt    chan int
+        chFloat  chan float64
+        chString chan string
+    )
+    makeChan(&chInt)
+    makeChan(&chFloat)
+    makeChan(&chString)
+    
+    go pump(&chInt, 1)
+    go pump(&chFloat, 1.1)
+    go pump(&chString, "test")
+
+    for {
+    select {
+    case i := <-chInt:
+        fmt.Printf("got an int %d\n", i)
+    case f := <-chFloat:
+        fmt.Printf("got a float %f\n", f)
+    case s := <-chString:
+        fmt.Printf("got a string %s\n", s)
+    case <-time.After(time.Second * 10):
+        fmt.Println("Timed out")
+        return
+    }
+    }
+    fmt.Println("Good Bye!")
+}
+
+=================
+slide 33
+=================
+package main
+
+import (
+    "fmt"
+    "reflect"
+)
+
+func main() {
+    var x float64 = 3.4
+    fmt.Println("type:", reflect.TypeOf(x))
+}
+
+===================
+slide 33
+===================
+package main
+
+import (
+    "fmt"
+    "reflect"
+)
+
+func main() {
+    var x float64 = 3.4
+    fmt.Println("type:", reflect.TypeOf(x), reflect.ValueOf(x))
+    v := reflect.ValueOf(x)
+    fmt.Println(v.Type(),v.Kind(),v.Float(),v.CanSet())
+    pv := reflect.ValueOf(&x) 
+    v = pv.Elem()
+    fmt.Println(v.Type(),v.Kind(),v.Float(),v.CanSet())
+    v.SetFloat(4.3)
+    fmt.Println(v.Type(),v.Kind(),v.Float(),v.CanSet())
+}
+==================
+slide 33
+==================
+package main
+ 
+import(
+  "fmt"
+  "reflect"
+)
+ 
+func main(){
+  // iterate through the attributes of a Data Model instance
+  for name, mtype := range attributes(&Dish{}) {
+    fmt.Printf("Name: %s, Type %s\n", name, mtype.Name())
+  }
+}
+ 
+// Data Model
+type Dish struct {
+  Id  int
+  Name string
+  Origin string
+  Query func()
+}
+ 
+// Example of how to use Go's reflection
+// Print the attributes of a Data Model
+func attributes(m interface{}) (map[string]reflect.Type) {
+  typ := reflect.TypeOf(m)
+  // if a pointer to a struct is passed, get the type of the dereferenced object
+  if typ.Kind() == reflect.Ptr{
+    typ = typ.Elem()
+  }
+ 
+  // create an attribute data structure as a map of types keyed by a string.
+  attrs := make(map[string]reflect.Type)
+  // Only structs are supported so return an empty result if the passed object
+  // isn't a struct
+  if typ.Kind() != reflect.Struct {
+    fmt.Printf("%v type can't have attributes inspected\n", typ.Kind())
+    return attrs
+  }
+ 
+  // loop through the struct's fields and set the map
+  for i := 0; i < typ.NumField(); i++ {
+    p := typ.Field(i)
+      if !p.Anonymous {
+        attrs[p.Name] = p.Type
+      }
+     }
+ 
+  return attrs
+}
