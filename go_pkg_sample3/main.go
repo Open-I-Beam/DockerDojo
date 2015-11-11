@@ -23,8 +23,6 @@ func main() {
 	emprecs.Sortby = func(e1, e2 *employee.Employee) bool {
 		return e1.Salary <= e2.Salary
 	}
-	//TODO create sortby functions to sort my manager and by name
-	//check output after sort, if you have time write a unit test to check sorted records
 
 	sort.Sort(emprecs)
 	f2, err := os.Create("test2.txt")
